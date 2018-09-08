@@ -10,3 +10,7 @@ const { User } = require('./../server/models/user');
 Todo.deleteMany({}).then((result) => {
   log(result);
 });
+
+// findOneAndUpdate()
+// findOneAndReplace()
+// findOneAndDelete()
