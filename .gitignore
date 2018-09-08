@@ -20,6 +20,7 @@ npm-debug.log
 *.egg-info/
 .installed.cfg
 *.egg
+.env
 
 # Installer logs
 pip-log.txt
