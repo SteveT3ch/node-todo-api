@@ -1,5 +1,6 @@
 require('./config/config');
 
+
 const { log } = console;
 const _ = require('lodash');
 const express = require('express');
@@ -9,12 +10,14 @@ const { ObjectID } = require('mongodb');
 const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
+const { authenticate } = require('./middleware/authenticate');
 
 const app = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
+// POST /todos route
 app.post('/todos', (req, res) => {
   let todo = new Todo({
     text: req.body.text
@@ -27,6 +30,7 @@ app.post('/todos', (req, res) => {
   });
 });
 
+// GET /todos route
 app.get('/todos', (req, res) => {
   Todo.find().then((todos) => {
     res.send({todos});
@@ -35,7 +39,7 @@ app.get('/todos', (req, res) => {
   });
 });
 
-// GET by id
+// GET /todos/:id route
 app.get('/todos/:id', (req, res) => {
   let id = req.params.id
 
@@ -55,7 +59,7 @@ app.get('/todos/:id', (req, res) => {
   });
 });
 
-// Delete route
+// Delete /todos/:id route
 app.delete('/todos/:id', (req, res) => {
   let id = req.params.id
 
@@ -75,7 +79,7 @@ app.delete('/todos/:id', (req, res) => {
   })
 });
 
-// Update route
+// Update /todos/:id route
 app.patch('/todos/:id', (req, res) =>{
   let id = req.params.id;
   let body = _.pick(req.body, ['text', 'completed']);
@@ -115,6 +119,13 @@ app.post('/users', (req, res) => {
     res.status(400).send(e);
   })
 });
+
+
+// GET /users/me route
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
+});
+
 
 
 app.listen(port, () => {

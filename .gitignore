@@ -21,6 +21,7 @@ npm-debug.log
 .installed.cfg
 *.egg
 .env
+.tern-project
 
 # Installer logs
 pip-log.txt
